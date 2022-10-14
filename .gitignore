@@ -1,0 +1,7 @@
+.history/
+.idea/
+bin/
+obj/
+
+*.[Cc]ache
+!*.[Cc]ache/
