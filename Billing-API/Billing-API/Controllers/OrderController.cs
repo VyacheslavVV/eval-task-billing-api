@@ -12,10 +12,12 @@ namespace Billing_API.Controllers;
 public class OrderController : ControllerBase
 {
     private readonly ILogger _logger;
+    private readonly IPaymentGatewayService _gatewayService;
 
-    public OrderController(ILogger<OrderController> logger)
+    public OrderController(ILogger<OrderController> logger, IPaymentGatewayService gatewayService)
     {
         _logger = logger;
+        _gatewayService = gatewayService;
     }
 
     /// <exception cref="ArgumentOutOfRangeException"></exception>
@@ -29,12 +31,7 @@ public class OrderController : ControllerBase
     [HttpPost]
     public IActionResult Place([FromBody] Order order)
     {
-        PaymentGateway paymentGateway = order.GatewayCode switch
-        {
-            GatewayCodes.Working => new PaymentGatewayWorking(),
-            GatewayCodes.NonWorking => new PaymentGatewayNonWorking(),
-            _ => throw new ArgumentOutOfRangeException(nameof(order.GatewayCode))
-        };
+        var paymentGateway = _gatewayService.GetPaymentGateway(order.GatewayCode);
 
         ActionResult result;
 
