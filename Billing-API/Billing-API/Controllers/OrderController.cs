@@ -33,19 +33,6 @@ public class OrderController : ControllerBase
     {
         var paymentGateway = _gatewayService.GetPaymentGateway(order.GatewayCode);
 
-        ActionResult result;
-
-        try
-        {
-            result = Ok( paymentGateway.DoPlaceOrder(order));
-        }
-        catch (CheckoutException exception)
-        {
-            _logger.LogCritical($"An exception, while processing order: {exception.Message}");
-
-            result = StatusCode((int) HttpStatusCode.InternalServerError, "Something went wrong");
-        }
-
-        return result;
+        return Ok( paymentGateway.DoPlaceOrder(order));
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Billing_API.Models;
+﻿using System;
+
+namespace Billing_API.Models;
 
 public class PaymentReceipt
 {
